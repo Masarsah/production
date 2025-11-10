@@ -9,8 +9,8 @@ create database chaten;
 -- 1) Users & auth
 CREATE TABLE users (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  phone.          TEXT UNIQUE NOT NULL,
-  email           TEXT UNIQUE NOT NULL,
+  phone          TEXT UNIQUE ,
+  email           TEXT UNIQUE ,
   password_hash   TEXT ,
   display_name    TEXT,
   role            TEXT NOT NULL CHECK (role IN ('student','teacher','admin')),
