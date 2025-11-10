@@ -6,6 +6,13 @@ import bodyParser from "body-parser";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // --- Services ---
 import { ChatGPTService } from "./ollama.js";
@@ -55,7 +62,13 @@ app.use("/api/v1/quizzes", quizzesRouter);
 app.use("/api/v1/submissions", submissionsRouter);
 
 // Web Push endpoints
-app.use("/", pushRoutes);
+app.use("/api/v1/n", pushRoutes);
+
+app.use(express.static(path.join(__dirname, "dist")));
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 // --- Initialize services ---
 const ollama = new ChatGPTService();
@@ -148,15 +161,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// --- Error handling middleware ---
-app.use((err, req, res, next) => {
-  console.error("❗ Internal error:", err.stack);
-  res.status(500).json({
-    success: false,
-    message: "Internal server error",
-    error: err.message,
-  });
-});
+
 
 // --- Start server ---
 const PORT = process.env.PORT || 5000;
