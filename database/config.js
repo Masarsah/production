@@ -6,7 +6,7 @@ const db = pgp({
   host: "localhost",
   port: 5432,
   database: "chaten",
-  user: "masarah",
+  user: "postgres",
   password: "12345678"
 });
 
