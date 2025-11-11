@@ -1,9 +1,9 @@
-import { db, listener } from '../database/config.js';
+import db from '../database/config.js';
 import webpush from '../utiles/webpush.js';
 
 export default function setupDBListener(io) {
   // Attach listener to PostgreSQL notifications
-  listener.connect()
+  db.connect()
     .then(obj => {
       console.log('📡 Connected for LISTEN/NOTIFY');
       const cn = obj.client;

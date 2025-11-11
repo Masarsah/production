@@ -18,7 +18,7 @@ const __dirname = path.dirname(__filename);
 import { ChatGPTService } from "./ollama.js";
 import { PDFProcessor } from "./utiles/pdf.js";
 import webpush from "./utiles/webpush.js";
-import { db, listener } from "./database/config.js";
+import db from "./database/config.js";
 
 // --- Routes ---
 import usersRouter from "./routers/users.js";
@@ -74,8 +74,8 @@ app.get("/", (req, res) => {
 const ollama = new ChatGPTService();
 const pdfProcessor = new PDFProcessor();
 
-// --- Real-time Postgres Listener (LISTEN/NOTIFY) ---
-listener.connect()
+// --- Real-time Postgres  (LISTEN/NOTIFY) ---
+db.connect()
   .then(obj => {
     console.log("📡 Connected to PostgreSQL LISTEN/NOTIFY channel");
     const cn = obj.client;
