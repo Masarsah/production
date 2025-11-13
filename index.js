@@ -34,16 +34,30 @@ import pushRoutes from "./routers/pushRoutes.js"; // your push notification rout
 // --- Express + HTTP + Socket.IO ---
 const app = express();
 const httpServer = createServer(app);
+const allowedOrigins = [
+  "http://localhost:5173",         // local dev
+  "http://127.0.0.1:5173",         // alternate local
+      "https://amalchatai.chat",
+    "https://www.amalchatai.chat"
+];
 
+// ✅ Express CORS setup
 app.use(cors({
-  origin: "http://localhost:5173", // frontend origin
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,
 }));
 
+// ✅ Socket.IO setup with matching CORS
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
