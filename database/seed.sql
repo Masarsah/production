@@ -4,7 +4,7 @@ create database chaten;
 
 \c chaten
 
-
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- 1) Users & auth
 CREATE TABLE users (
